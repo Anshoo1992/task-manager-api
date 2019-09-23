@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secretKeyword = 'generatejsonwebtokenforapp';
 const Tasks = require('../models/task');
+
 //Model creation 
 const userSchema = new mongoose.Schema({
     name: {
@@ -39,12 +40,17 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    avatar:{
+        type:Buffer
+    },
     tokens: [{
         token: {
             type: String,
             required: true
         }
     }]
+},{
+    timestamps:true
 });
 
 userSchema.virtual('tasks', {
@@ -71,7 +77,8 @@ userSchema.methods.toJSON = function () {
 
     delete userObject.tokens;
     delete userObject.password;
-
+    delete userObject.avatar;
+    
     return userObject;
 }
 
